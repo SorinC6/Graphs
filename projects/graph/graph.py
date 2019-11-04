@@ -116,7 +116,24 @@ class Graph:
         starting_vertex to destination_vertex in
         depth-first order.
         """
-        pass  # TODO
+        stack = Stack()
+        visited = set()
+        # first item
+        stack.push([starting_vertex])
+        while stack.size() > 0:
+            path = stack.pop()
+            # last item
+            vertex = path[-1]
+            if vertex not in visited:
+                # the point to verify
+                if vertex == destination_vertex:
+                    return path
+                visited.add(vertex)
+                for next_vert in self.vertices[vertex]:
+                    # for each vertex we are creating new path
+                    new_path = list(path)
+                    new_path.append(next_vert)
+                    stack.push(new_path)
 
 
 if __name__ == '__main__':
@@ -196,4 +213,5 @@ if __name__ == '__main__':
         [1, 2, 4, 6]
         [1, 2, 4, 7, 6]
     '''
+    print("PRINT DFS")
     print(graph.dfs(1, 6))
