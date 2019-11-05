@@ -15,7 +15,7 @@ class Queue():
         return len(self.queue)
 
 
-class Graph:
+class Graph():
     def __init__(self):
         self.vertices = {}
 
@@ -31,4 +31,31 @@ class Graph:
 
 
 def earliest_ancestor(ancestors, starting_node):
-    pass
+    # build the graph
+    graph = Graph()
+
+    for pair in ancestors:
+        graph.add_vertex(pair[0])
+        graph.add_vertex(pair[1])
+
+        # build the edges in reverse  link to the kids to the parents
+        graph.add_edges(pair[1], pair[0])
+
+    queue = Queue()
+    queue.enqueue([starting_node])
+    max_path_length = 1
+    earliest_ancestor = -1
+
+    while queue.size() > 0:
+        path = queue.dequeue()
+        v = path[-1]
+
+        if(len(path) >= max_path_length and v < earliest_ancestor) or (len(path) > max_path_length):
+            earliest_ancestor = v
+            max_path_length = len(path)
+
+        for neigboor in graph.vertices[v]:
+            path_copy = list(path)
+            path_copy.append(neigboor)
+            queue.enqueue(path_copy)
+    return earliest_ancestor
